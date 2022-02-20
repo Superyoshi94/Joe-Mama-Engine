@@ -3,7 +3,7 @@
  
  Improvements:
  Chart gridding, Pressing b m or m changes a grid snap from halfs, thirds and quads.
- Engine, way better engine, hitting notes works now, ghost tapping too. (Did you know that you yourself can make the fnf engine better very easily?)
+ Engine, way better engine, hitting notes works now, ghost tapping too.
  Multiple Keybinds.
  ASWD
  Arrows
