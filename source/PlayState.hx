@@ -1599,16 +1599,6 @@ class PlayState extends MusicBeatState
 							songMisses += 1;
 
 							FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
-							// FlxG.sound.play('assets/sounds/missnote1' + TitleState.soundExt, 1, false);
-							// FlxG.log.add('played imss note');
-
-							boyfriend.stunned = true;
-
-							// get stunned for 5 seconds
-							new FlxTimer().start(5 / 60, function(tmr:FlxTimer)
-							{
-								boyfriend.stunned = false;
-							});
 						}
 
 						daNote.active = false;
@@ -1729,7 +1719,7 @@ class PlayState extends MusicBeatState
 		var rating:FlxSprite = new FlxSprite();
 		var score:Int = 350;
 
-		var daRating:String = "sick";
+		var daRating:String = "perfect";
 
 		if (noteDiff > Conductor.safeZoneOffset * 0.9)
 		{
@@ -1746,7 +1736,12 @@ class PlayState extends MusicBeatState
 			daRating = 'good';
 			score = 200;
 		}
-
+		else if (noteDiff > Conductor.safeZoneOffset * 0.1)
+		{
+			daRating = 'sick';
+			score = 400;
+		}
+		
 		songScore += score;
 
 		/* if (combo > 60)
@@ -1913,7 +1908,7 @@ class PlayState extends MusicBeatState
 				var daNote = possibleNotes[0];
 
 				if (botplay)
-					noteCheck(true, daNote, true);
+					noteCheck(controlArray, daNote, true);
 
 				// Jump notes
 				if (possibleNotes.length >= 2)
@@ -1939,19 +1934,19 @@ class PlayState extends MusicBeatState
 					}
 					else if (possibleNotes[0].noteData == possibleNotes[1].noteData)
 					{
-						noteCheck(controlArray[daNote.noteData], daNote, false);
+						noteCheck(controlArray, daNote, false);
 					}
 					else
 					{
 						for (coolNote in possibleNotes)
 						{
-							noteCheck(controlArray[coolNote.noteData], coolNote, false);
+							noteCheck(controlArray, coolNote, false);
 						}
 					}
 				}
 				else // regular notes?
 				{
-					noteCheck(controlArray[daNote.noteData], daNote, false);
+					noteCheck(controlArray, daNote, false);
 				}
 				/* 
 					if (controlArray[daNote.noteData])
@@ -2074,16 +2069,6 @@ class PlayState extends MusicBeatState
 			songMisses += 1;
 
 			FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + TitleState.soundExt, FlxG.random.float(0.1, 0.2));
-			// FlxG.sound.play('assets/sounds/missnote1' + TitleState.soundExt, 1, false);
-			// FlxG.log.add('played imss note');
-
-			boyfriend.stunned = true;
-
-			// get stunned for 5 seconds
-			new FlxTimer().start(5 / 60, function(tmr:FlxTimer)
-			{
-				boyfriend.stunned = false;
-			});
 
 			switch (direction)
 			{
@@ -2109,11 +2094,9 @@ class PlayState extends MusicBeatState
 		var leftP = controls.LEFT_P;
 	}
 
-	function noteCheck(keyP:Bool, note:Note, botplay:Bool):Void
+	function noteCheck(controlArray:Array<Bool>, note:Note, botplay:Bool):Void
 	{
-		if (keyP)
-			goodNoteHit(note);
-		else if (botplay)
+		if (controlArray[note.noteData] || (botplay))
 		{
 			goodNoteHit(note);
 		}
